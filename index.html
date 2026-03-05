@@ -1,3 +1,123 @@
 佐武のテスト</br>
 佐武のテスト２
-サンプルガチャ
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>スマホ風ガチャゲーム</title>
+<style>
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+    text-align: center;
+}
+
+.container {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+button {
+    background: gold;
+    border: none;
+    padding: 12px 25px;
+    font-size: 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    margin: 10px;
+    font-weight: bold;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+.result {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.card {
+    background: white;
+    color: black;
+    padding: 15px;
+    border-radius: 15px;
+    font-weight: bold;
+    animation: pop 0.3s ease;
+}
+
+.N { border: 3px solid gray; }
+.R { border: 3px solid blue; }
+.SR { border: 3px solid purple; }
+.SSR { border: 3px solid gold; }
+
+@keyframes pop {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+
+.rarity {
+    font-size: 14px;
+    margin-top: 5px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>✨ ドリームガチャ ✨</h1>
+    <button onclick="drawGacha(1)">1回引く</button>
+    <button onclick="drawGacha(10)">10連ガチャ</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+const characters = [
+    {name:"スライム", rarity:"N"},
+    {name:"戦士", rarity:"R"},
+    {name:"魔法使い", rarity:"R"},
+    {name:"ドラゴン", rarity:"SR"},
+    {name:"天使", rarity:"SR"},
+    {name:"魔王", rarity:"SSR"}
+];
+
+// 排出確率
+function getRandomCharacter() {
+    let rand = Math.random() * 100;
+
+    if (rand < 60) return characters[0];      // N 60%
+    else if (rand < 85) return characters[Math.floor(Math.random()*2)+1]; // R 25%
+    else if (rand < 97) return characters[Math.floor(Math.random()*2)+3]; // SR 12%
+    else return characters[5];                // SSR 3%
+}
+
+function drawGacha(times) {
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "";
+
+    for (let i = 0; i < times; i++) {
+        const char = getRandomCharacter();
+
+        const card = document.createElement("div");
+        card.classList.add("card", char.rarity);
+        card.innerHTML = `
+            ${char.name}
+            <div class="rarity">${char.rarity}</div>
+        `;
+        resultDiv.appendChild(card);
+    }
+}
+</script>
+
+</body>
+</html>
